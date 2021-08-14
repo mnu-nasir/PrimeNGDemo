@@ -1,0 +1,58 @@
+<h2>Table with Rog Group</h2>
+
+<p-table #dt2 [columns]="selectedColumns" [value]="products" sortField="category" sortMode="single" (onSort)="onSort()"
+  dataKey="category" styleClass="p-datatable-gridlines p-datatable-striped">
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th *ngFor="let col of columns">
+        {{col.header}}
+      </th>
+    </tr>
+    <tr>
+      <th *ngFor="let col of columns" [ngSwitch]="col.field">
+        <p-columnFilter *ngSwitchCase="'code'" type="text" field="code" matchMode="contains"
+          (input)="applyFilter1($event, 'code', 'contains')">
+        </p-columnFilter>
+
+        <p-columnFilter *ngSwitchCase="'name'" type="text" field="name" matchMode="contains"
+          (input)="applyFilter1($event, 'name', 'contains')">
+        </p-columnFilter>
+
+        <p-columnFilter *ngSwitchCase="'category'" field="category" matchMode="equals" [showMenu]="false">
+          <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+            <p-dropdown [ngModel]="value" [options]="categories" (onChange)="filter($event.value)" placeholder="Any"
+              [showClear]="true">
+              <ng-template let-option pTemplate="item">
+                <div class="p-multiselect-representative-option">
+                  <span class="p-ml-1">{{option.label}}</span>
+                </div>
+              </ng-template>
+            </p-dropdown>
+          </ng-template>
+        </p-columnFilter>
+
+        <p-columnFilter *ngSwitchCase="'quantity'" type="text" field="quantity" matchMode="equals"
+          (input)="dt2.filter($event.target.value1)">
+        </p-columnFilter>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex" let-expanded="expanded">
+    <tr *ngIf="rowGroupMetadata[rowData.category].index === rowIndex">
+      <td colspan="4">
+        <button type="button" pButton pRipple [pRowToggler]="rowData"
+          class="p-button-text p-button-rounded p-button-plain p-mr-2"
+          [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+        <span class="p-text-bold p-ml-2">{{rowData.category}}</span>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
+    <tr>
+      <td *ngFor="let col of columns">
+        <span>{{rowData[col.field]}}</span>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

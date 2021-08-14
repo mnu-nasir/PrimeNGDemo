@@ -1,0 +1,62 @@
+<h2>Table Example</h2>
+
+<p-table #dt1 [columns]="selectedColumns" [value]="products" dataKey="id"
+	styleClass="p-datatable-gridlines p-datatable-striped" [paginator]="true" [rows]="5"
+	[rowsPerPageOptions]="[5,10,20]" [showCurrentPageReport]="true"
+	currentPageReportTemplate="{first} to {last} of {totalRecords} items">
+	<ng-template pTemplate="caption">
+		<p-multiSelect [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
+			selectedItemsLabel="{0} columns selected" [style]="{minWidth: '300px'}" placeholder="Choose Columns">
+		</p-multiSelect>
+	</ng-template>
+
+	<ng-template pTemplate="header" let-columns>
+		<tr>
+			<th *ngFor="let col of columns" pSortableColumn="{{col.field}}">
+				{{col.header}}
+				<p-sortIcon field="{{col.field}}"></p-sortIcon>
+			</th>
+		</tr>
+		<tr>
+			<th *ngFor="let col of columns" [ngSwitch]="col.field">
+				<!-- Option 1: for this strict template in tsconfig file should disable -->
+				<!-- <p-columnFilter *ngSwitchCase="'name'" type="text" field="name" matchMode="contains" [ngModel]="value1"
+					(input)="dt1.filter($event.target.value1)">
+				</p-columnFilter> -->
+
+				<!-- Option 2 -->
+				<p-columnFilter *ngSwitchCase="'code'" type="text" field="code" matchMode="contains"
+					(input)="applyFilter($event, 'code', 'contains')">
+				</p-columnFilter>
+
+				<p-columnFilter *ngSwitchCase="'name'" type="text" field="name" matchMode="contains"
+					(input)="applyFilter($event, 'name', 'contains')">
+				</p-columnFilter>
+
+				<p-columnFilter *ngSwitchCase="'category'" field="category" matchMode="equals" [showMenu]="false">
+					<ng-template pTemplate="filter" let-value let-filter="filterCallback">
+						<p-dropdown [ngModel]="value" [options]="categories" (onChange)="filter($event.value)"
+							placeholder="Any" [showClear]="true">
+							<ng-template let-option pTemplate="item">
+								<div class="p-multiselect-representative-option">
+									<span class="p-ml-1">{{option.label}}</span>
+								</div>
+							</ng-template>
+						</p-dropdown>
+					</ng-template>
+				</p-columnFilter>
+
+				<p-columnFilter *ngSwitchCase="'quantity'" type="text" field="quantity" matchMode="equals"
+					(input)="dt1.filter($event.target?.value1)">
+				</p-columnFilter>
+			</th>
+		</tr>
+	</ng-template>
+	<ng-template pTemplate="body" let-rowData let-columns="columns">
+		<tr>
+			<td *ngFor="let col of columns">
+				<span>{{rowData[col.field]}}</span>
+			</td>
+		</tr>
+	</ng-template>
+</p-table>
