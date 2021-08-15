@@ -35,7 +35,7 @@ export class RowGroupGridComponent implements OnInit {
 
     this._selectedColumns = this.cols;
 
-    this.categories = [      
+    this.categories = [
       { label: "Clothing", value: "Clothing" },
       { label: "Electronics", value: "Electronics" },
       { label: "Fitness", value: "Fitness" },
@@ -61,19 +61,20 @@ export class RowGroupGridComponent implements OnInit {
     this.updateRowGroupMetaData();
   }
 
-  updateRowGroupMetaData() {
+  updateRowGroupMetaData(rows?: Product[]) {
+    let products = rows ?? this.products;
     this.rowGroupMetadata = {};
 
-    if (this.products) {
-      for (let i = 0; i < this.products.length; i++) {
-        let rowData = this.products[i];
+    if (products) {
+      for (let i = 0; i < products.length; i++) {
+        let rowData = products[i];
         let category1 = rowData.category;
 
         if (i == 0) {
           this.rowGroupMetadata[category1] = { index: 0, size: 1 };
         }
         else {
-          let previousRowData = this.products[i - 1];
+          let previousRowData = products[i - 1];
           let previousRowGroup = previousRowData.category;
 
           if (category1 === previousRowGroup)
@@ -83,5 +84,10 @@ export class RowGroupGridComponent implements OnInit {
         }
       }
     }
+  }
+
+  dropdownFilter(filter: (a: any) => void, value: string) {
+    filter(value);
+    this.updateRowGroupMetaData(this.dt2.filteredValue);
   }
 }

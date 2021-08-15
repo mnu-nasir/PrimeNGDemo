@@ -4,8 +4,9 @@
   dataKey="category" styleClass="p-datatable-gridlines p-datatable-striped">
   <ng-template pTemplate="header" let-columns>
     <tr>
-      <th *ngFor="let col of columns">
+      <th *ngFor="let col of columns" pSortableColumn="{{col.field}}">
         {{col.header}}
+        <p-sortIcon field="{{col.field}}"></p-sortIcon>
       </th>
     </tr>
     <tr>
@@ -20,7 +21,7 @@
 
         <p-columnFilter *ngSwitchCase="'category'" field="category" matchMode="equals" [showMenu]="false">
           <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-            <p-dropdown [ngModel]="value" [options]="categories" (onChange)="filter($event.value)" placeholder="Any"
+            <p-dropdown [options]="categories" (onChange)="dropdownFilter(filter, $event.value)" placeholder="Any"
               [showClear]="true">
               <ng-template let-option pTemplate="item">
                 <div class="p-multiselect-representative-option">

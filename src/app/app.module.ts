@@ -10,6 +10,7 @@ import { TableModule } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
 import {MultiSelectModule} from 'primeng/multiselect';
 import { RowGroupGridComponent } from './row-group-grid/row-group-grid.component';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
    declarations: [
@@ -23,6 +24,7 @@ import { RowGroupGridComponent } from './row-group-grid/row-group-grid.component
 	 AppRoutingModule,
 	 TableModule,
 	 DropdownModule,
+    ButtonModule,
 	 MultiSelectModule,
 	 HttpClientModule,
 	 FormsModule
